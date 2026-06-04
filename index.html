@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My GitHub Web Game</title>
+    <style>
+        body {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        canvas {
+            background-color: #000;
+            border: 4px solid #fff;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Click the Box Game!</h1>
+    <p>Score: <span id="scoreLabel">0</span></p>
+    <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreLabel = document.getElementById("scoreLabel");
+
+        let score = 0;
+        
+        // Target Box Object properties
+        let target = {
+            x: 200,
+            y: 150,
+            size: 50,
+            color: "red"
+        };
+
+        // Move the target to a random spot
+        function moveTarget() {
+            target.x = Math.floor(Math.random() * (canvas.width - target.size));
+            target.y = Math.floor(Math.random() * (canvas.height - target.size));
+        }
+
+        // Main game drawing loops
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear screen
+            
+            // Draw Target Box
+            ctx.fillStyle = target.color;
+            ctx.fillRect(target.x, target.y, target.size, target.size);
+        }
+
+        // Check if the user clicks inside the target box
+        canvas.addEventListener("mousedown", function(event) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            if (mouseX >= target.x && mouseX <= target.x + target.size &&
+                mouseY >= target.y && mouseY <= target.y + target.size) {
+                
+                score++;
+                scoreLabel.innerText = score;
+                moveTarget();
+            }
+        });
+
+        // Loop the game graphics 60 times a second
+        setInterval(draw, 1000 / 60);
+    </script>
+</body>
+</html>
 
